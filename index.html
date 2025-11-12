@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Universum 4.0 | Powered by Gemini</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Slab:wght@400;700&family=Source+Code+Pro:wght@400;600&family=Lora:wght@400;700&family=Fira+Code:wght@400;600&family=Poppins:wght@400;600;700&family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Nunito:wght@400;600;700&family=Merriweather:wght@400;700&family=Inconsolata:wght@400;600&family=Lato:wght@400;700&family=Oswald:wght@400;600&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0KOVEMVIARBEKrDsLdcDPgw2YJ409SXRdcAOLMYA6ECAbOYSUi8a5" crossorigin="anonymous">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+    </script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              serif: ['Roboto Slab', 'serif'],
+              mono: ['Source Code Pro', 'monospace'],
+              lora: ['Lora', 'serif'],
+              'fira-code': ['Fira Code', 'monospace'],
+              poppins: ['Poppins', 'sans-serif'],
+              montserrat: ['Montserrat', 'sans-serif'],
+              playfair: ['Playfair Display', 'serif'],
+              'jetbrains-mono': ['JetBrains Mono', 'monospace'],
+              nunito: ['Nunito', 'sans-serif'],
+              merriweather: ['Merriweather', 'serif'],
+              inconsolata: ['Inconsolata', 'monospace'],
+              lato: ['Lato', 'sans-serif'],
+              oswald: ['Oswald', 'sans-serif'],
+              'roboto-mono': ['Roboto Mono', 'monospace'],
+            },
+            colors: {
+              'brand-primary': '#22d3ee', // cyan-400
+              'brand-secondary': '#67e8f9', // cyan-300
+              'base-100': '#ffffff',        // white
+              'base-200': '#f1f5f9',        // slate-100
+              'base-300': '#e2e8f0',        // slate-200
+              'text-primary': '#0f172a',    // slate-900
+              'text-secondary': '#64748b',  // slate-500
+              'dark': {
+                'brand-primary': '#22d3ee',   // cyan-400
+                'brand-secondary': '#a5f3fc',// cyan-200
+                'base-100': '#111827',       // gray-900 - Main background
+                'base-200': '#1f2937',       // gray-800 - UI Elements (messages, modals)
+                'base-300': '#374151',       // gray-700 - Inputs, Sidebar BG
+                'text-primary': '#f9fafb',   // gray-50
+                'text-secondary': '#9ca3af', // gray-400
+              },
+              'white': '#ffffff',
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.5s ease-out forwards',
+              'fade-in-down': 'fadeInDown 0.3s ease-out forwards',
+              'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'glow': 'glow 2s ease-in-out infinite',
+              'message-in': 'message-in 0.4s ease-out forwards',
+              'toast-in': 'toast-in-right 0.4s ease-out forwards',
+              'toast-out': 'toast-out-right 0.4s ease-in forwards',
+              'tooltip-in': 'tooltipIn 0.2s ease-out forwards',
+              'blinking-opacity': 'blinking-opacity 1s step-end infinite',
+              'rotate-3d': 'rotate-3d 12s ease-in-out infinite',
+              'synapse-pulse': 'synapse-pulse 1.5s ease-out forwards',
+              'draw-line': 'draw-line 2s ease-out forwards',
+              'move-bg': 'move-bg 30s ease-in-out infinite',
+              'aurora-glow': 'aurora-glow 18s ease-in-out infinite',
+              'move-grid': 'move-grid 4s linear infinite',
+              'digital-rain-flow': 'digital-rain-flow 1.8s linear infinite',
+              'tetris-fall': 'tetris-fall 8s linear infinite',
+              'editing-glow': 'editing-glow 2s ease-in-out infinite',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              fadeInDown: {
+                '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              glow: {
+                '0%, 100%': { 'box-shadow': '0 0 2px #22d3ee, 0 0 5px #22d3ee' },
+                '50%': { 'box-shadow': '0 0 8px #22d3ee, 0 0 15px #22d3ee' },
+              },
+              'message-in': {
+                '0%': { opacity: '0', transform: 'translateY(10px) scale(0.98)' },
+                '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+              },
+              'toast-in-right': {
+                '0%': { transform: 'translateX(100%)', opacity: '0' },
+                '100%': { transform: 'translateX(0)', opacity: '1' },
+              },
+              'toast-out-right': {
+                '0%': { transform: 'translateX(0)', opacity: '1' },
+                '100%': { transform: 'translateX(100%)', opacity: '0' },
+              },
+              tooltipIn: {
+                '0%': { opacity: '0', transform: 'translateY(5px) scale(0.95)' },
+                '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+              },
+              'blinking-opacity': {
+                '0%, 100%': { opacity: '1' },
+                '50%': { opacity: '0' },
+              },
+              'rotate-3d': {
+                '0%, 100%': { transform: 'rotateX(0deg) rotateY(0deg) rotateZ(0deg)' },
+                '25%': { transform: 'rotateX(15deg) rotateY(25deg) rotateZ(-5deg)' },
+                '75%': { transform: 'rotateX(-15deg) rotateY(-25deg) rotateZ(5deg)' },
+              },
+              'synapse-pulse': {
+                '0%': { 'stroke-dashoffset': '200' },
+                '100%': { 'stroke-dashoffset': '0' },
+              },
+              'draw-line': {
+                'to': { 'stroke-dashoffset': '0' },
+              },
+              'move-bg': {
+                '0%': { backgroundPosition: '0% 50%' },
+                '50%': { backgroundPosition: '100% 50%' },
+                '100%': { backgroundPosition: '0% 50%' },
+              },
+              'aurora-glow': {
+                '0%': { backgroundPosition: '0% 50%' },
+                '50%': { backgroundPosition: '100% 50%' },
+                '100%': { backgroundPosition: '0% 50%' },
+              },
+              'move-grid': {
+                '0%': { backgroundPosition: '0 0' },
+                '100%': { backgroundPosition: '50px 50px' },
+              },
+              'digital-rain-flow': {
+                'to': {
+                  'background-position':
+                    '0 30px, 10px 70px, 5px 85px, 20px 90px'
+                },
+              },
+              'tetris-fall': {
+                'from': { backgroundPosition: '20px 0, 20px 0, 40px 20px, 40px 20px, 0 40px, 0 40px, 60px 60px, 60px 60px' },
+                'to': { backgroundPosition: '20px 80px, 20px 80px, 40px 100px, 40px 100px, 0 120px, 0 120px, 60px 140px, 60px 140px' },
+              },
+              'editing-glow': {
+                '0%, 100%': { 'box-shadow': '0 0 0 0px rgba(34, 211, 238, 0.2)' },
+                '50%': { 'box-shadow': '0 0 0 4px rgba(34, 211, 238, 0.4)' },
+              },
+            }
+          }
+        }
+      }
+    </script>
+  <!-- 3D Model Viewer Component -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react-dom/client": "https://esm.sh/react-dom@^19.1.0/client",
+    "@google/genai": "https://esm.sh/@google/genai@^1.7.0",
+    "react-markdown": "https://esm.sh/react-markdown@^9.0.1",
+    "remark-gfm": "https://esm.sh/remark-gfm@^4.0.0",
+    "remark-math": "https://esm.sh/remark-math@^6.0.0",
+    "rehype-katex": "https://esm.sh/rehype-katex@^7.0.0",
+    "react-syntax-highlighter": "https://esm.sh/react-syntax-highlighter@15.5.0",
+    "react-syntax-highlighter/": "https://esm.sh/react-syntax-highlighter@15.5.0/",
+    "jspdf": "https://esm.sh/jspdf@^2.5.1",
+    "html2canvas": "https://esm.sh/html2canvas@^1.4.1",
+    "xlsx": "https://esm.sh/xlsx@^0.18.5",
+    "pptxgenjs": "https://esm.sh/pptxgenjs@^3.12.0",
+    "docx": "https://esm.sh/docx@^8.5.0"
+  }
+}
+</script>
+<style>
+  /* Custom Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #e2e8f0; /* base-300 */
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #cbd5e1; /* slate-300 */
+  }
+  /* Dark mode scrollbar */
+  .dark ::-webkit-scrollbar-thumb {
+    background: #4b5563; /* gray-600 */
+  }
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: #6b7280; /* gray-500 */
+  }
+  /* KaTeX font size adjustment */
+  .katex {
+    font-size: 1.1em !important;
+  }
+  .dark .katex {
+    color: #f9fafb; /* dark-text-primary (gray-50) */
+  }
+  .dark .math-on-stripe .katex {
+    color: #0f172a; /* text-primary (slate-900) */
+  }
+  .prose p {
+    margin-bottom: 1rem;
+  }
+  .prose ul, .prose ol {
+    margin-left: 1.5rem;
+  }
+  .prose pre {
+    margin-bottom: 1rem;
+    white-space: pre-wrap;
+  }
+  .perspective-container {
+    perspective: 800px;
+  }
+  @keyframes shimmer {
+    0% { background-position: -800px 0; }
+    100% { background-position: 800px 0; }
+  }
+  .animate-shimmer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.1) 20%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 80%, transparent 100%);
+    background-size: 800px 100%;
+    background-repeat: no-repeat;
+    animation: shimmer 1.8s infinite linear;
+  }
+  .dark .animate-shimmer::after {
+    background-image: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.05) 20%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 80%, transparent 100%);
+  }
+
+  /* --- Background Styles --- */
+  .bg-universum {
+      background: linear-gradient(220deg, #f8fafc, #eef2f7);
+      background-size: 200% 200%;
+      animation: move-bg 30s ease-in-out infinite;
+  }
+  .dark .bg-universum {
+      background: linear-gradient(220deg, #1f2937, #111827, #1f2937);
+      background-size: 200% 200%;
+      animation: move-bg 25s ease-in-out infinite;
+  }
+  .bg-neural {
+      background-color: #f8fafc;
+      background-image:
+          linear-gradient(rgba(100, 116, 139, 0.08) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(100, 116, 139, 0.08) 1px, transparent 1px);
+      background-size: 2rem 2rem;
+      transition: background-color 0.5s;
+  }
+  .dark .bg-neural {
+      background-color: #111827;
+      background-image:
+          linear-gradient(rgba(34, 211, 238, 0.08) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(34, 211, 238, 0.08) 1px, transparent 1px);
+      background-size: 2.5rem 2.5rem;
+  }
+  .bg-cosmic {
+      background-color: #f0f4f8;
+      background-image: radial-gradient(circle, #e2e8f0 1px, transparent 1px);
+      background-size: 1.5rem 1.5rem;
+      transition: background-color 0.5s;
+  }
+  .dark .bg-cosmic {
+      background-color: #0c1425;
+      background-image: radial-gradient(circle, #22d3ee22 1px, transparent 1px);
+      background-size: 3rem 3rem;
+  }
+  .bg-plain {
+      background-color: #ffffff;
+      transition: background-color 0.5s;
+  }
+  .dark .bg-plain {
+      background-color: #111827;
+  }
+  .bg-geometric {
+      background-color: #f8fafc;
+      background-image:
+          linear-gradient(rgba(100, 116, 139, 0.1) 0.5px, transparent 0.5px),
+          linear-gradient(90deg, rgba(100, 116, 139, 0.1) 0.5px, transparent 0.5px);
+      background-size: 1.5rem 1.5rem;
+      transition: background-color 0.5s;
+  }
+  .dark .bg-geometric {
+      background-color: #111827;
+      background-image:
+          linear-gradient(rgba(34, 211, 238, 0.1) 0.5px, transparent 0.5px),
+          linear-gradient(90deg, rgba(34, 211, 238, 0.1) 0.5px, transparent 0.5px);
+      background-size: 2rem 2rem;
+  }
+  @keyframes move-stars {
+      from { background-position: 0 0; }
+      to { background-position: -10000px 5000px; }
+  }
+  .bg-starfield {
+      background-color: #0c1425;
+      background-image: 
+          radial-gradient(1px 1px at 20px 30px, #eee, transparent),
+          radial-gradient(1px 1px at 40px 70px, #fff, transparent),
+          radial-gradient(1px 1px at 50px 160px, #ddd, transparent),
+          radial-gradient(1.5px 1.5px at 90px 40px, #fff, transparent),
+          radial-gradient(1px 1px at 130px 80px, #fff, transparent),
+          radial-gradient(1.5px 1.5px at 160px 120px, #ddd, transparent);
+      background-repeat: repeat;
+      background-size: 200px 200px;
+      animation: move-stars 200s linear infinite;
+  }
+  .dark .bg-starfield {
+      background-color: #000;
+  }
+  .bg-gradient-wave {
+      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+      background-size: 400% 400%;
+      animation: move-bg 15s ease-in-out infinite;
+  }
+  .dark .bg-gradient-wave {
+      background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364);
+      background-size: 400% 400%;
+      animation: move-bg 20s ease-in-out infinite;
+  }
+  .bg-hexagon {
+    background-color: #f1f5f9;
+    background-image: linear-gradient(rgba(100, 116, 139, 0.07) 1px, transparent 1px),
+                      linear-gradient(120deg, rgba(100, 116, 139, 0.07) 1px, transparent 1px),
+                      linear-gradient(60deg, rgba(100, 116, 139, 0.07) 1px, transparent 1px);
+    background-size: 2rem 3.46rem;
+  }
+  .dark .bg-hexagon {
+      background-color: #111827;
+      background-image: linear-gradient(rgba(34, 211, 238, 0.08) 1px, transparent 1px),
+                        linear-gradient(120deg, rgba(34, 211, 238, 0.08) 1px, transparent 1px),
+                        linear-gradient(60deg, rgba(34, 211, 238, 0.08) 1px, transparent 1px);
+      background-size: 2.2rem 3.81rem;
+  }
+  @keyframes move-bubbles {
+      0% { background-position: 0 0, 50px 50px, 20px 80px, 90px 10px; }
+      100% { background-position: 0 -1000px, 50px -950px, 20px -920px, 90px -990px; }
+  }
+  .bg-bubbles {
+      background-color: #e0f2fe; /* light-blue-100 */
+      background-image:
+          radial-gradient(circle at 25% 25%, rgba(255,255,255,0.8) 5px, transparent 5px),
+          radial-gradient(circle at 75% 75%, rgba(255,255,255,0.6) 10px, transparent 10px),
+          radial-gradient(circle at 10% 80%, rgba(255,255,255,0.9) 8px, transparent 8px),
+          radial-gradient(circle at 80% 15%, rgba(255,255,255,0.5) 15px, transparent 15px);
+      background-size: 200px 200px;
+      animation: move-bubbles 40s linear infinite;
+  }
+  .dark .bg-bubbles {
+      background-color: #0c4a6e; /* sky-900 */
+      background-image:
+          radial-gradient(circle at 25% 25%, rgba(165, 243, 252, 0.2) 5px, transparent 5px),
+          radial-gradient(circle at 75% 75%, rgba(165, 243, 252, 0.15) 10px, transparent 10px),
+          radial-gradient(circle at 10% 80%, rgba(165, 243, 252, 0.25) 8px, transparent 8px),
+          radial-gradient(circle at 80% 15%, rgba(165, 243, 252, 0.1) 15px, transparent 15px);
+      background-size: 200px 200px;
+      animation: move-bubbles 30s linear infinite;
+  }
+  .bg-noise {
+      background-color: #f8fafc;
+      background-image: linear-gradient(45deg, rgba(0,0,0,0.01) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.01) 75%), linear-gradient(45deg, rgba(0,0,0,0.01) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.01) 75%);
+      background-size: 2px 2px;
+      background-position: 0 0, 1px 1px;
+  }
+  .dark .bg-noise {
+      background-color: #111827;
+      background-image: linear-gradient(45deg, rgba(255,255,255,0.02) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.02) 75%), linear-gradient(45deg, rgba(255,255,255,0.02) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.02) 75%);
+      background-size: 2px 2px;
+      background-position: 0 0, 1px 1px;
+  }
+  .bg-topo {
+    background-color: #f9fafb;
+    background-image:
+        radial-gradient(circle at center, rgba(156, 163, 175, 0.1) 1px, transparent 1px),
+        repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(156, 163, 175, 0.1) 20px),
+        repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(156, 163, 175, 0.1) 20px);
+    background-size: 1.25rem 1.25rem;
+  }
+  .dark .bg-topo {
+      background-color: #111827;
+      background-image:
+          radial-gradient(circle at center, rgba(34, 211, 238, 0.08) 1px, transparent 1px),
+          repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(34, 211, 238, 0.08) 20px),
+          repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(34, 211, 238, 0.08) 20px);
+      background-size: 1.5rem 1.5rem;
+  }
+
+  .bg-blueprint {
+      background-color: #eff6ff; /* blue-50 */
+      background-image:
+          linear-gradient(rgba(59, 130, 246, 0.2) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(59, 130, 246, 0.2) 1px, transparent 1px),
+          linear-gradient(rgba(59, 130, 246, 0.1) 0.5px, transparent 0.5px),
+          linear-gradient(90deg, rgba(59, 130, 246, 0.1) 0.5px, transparent 0.5px);
+      background-size: 75px 75px, 75px 75px, 15px 15px, 15px 15px;
+  }
+  .dark .bg-blueprint {
+      background-color: #1e3a8a; /* blue-900 */
+      background-image:
+          linear-gradient(rgba(147, 197, 253, 0.2) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(147, 197, 253, 0.2) 1px, transparent 1px),
+          linear-gradient(rgba(147, 197, 253, 0.1) 0.5px, transparent 0.5px),
+          linear-gradient(90deg, rgba(147, 197, 253, 0.1) 0.5px, transparent 0.5px);
+      background-size: 75px 75px, 75px 75px, 15px 15px, 15px 15px;
+  }
+
+  .bg-aurora {
+      background: linear-gradient(-45deg, #a8e6cf, #dcedc1, #ffd3b6, #ffaaa5);
+      background-size: 400% 400%;
+      animation: aurora-glow 18s ease-in-out infinite;
+  }
+  .dark .bg-aurora {
+      background: linear-gradient(-45deg, #0d3b66, #2a6f97, #3a86ff, #012a4a);
+      background-size: 400% 400%;
+      animation: aurora-glow 22s ease-in-out infinite;
+  }
+
+  /* --- New Background Styles --- */
+  .bg-circuit {
+    background-color: #f1f5f9;
+    background-image:
+      linear-gradient(rgba(100, 116, 139, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(100, 116, 139, 0.1) 1px, transparent 1px),
+      linear-gradient(rgba(100, 116, 139, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(100, 116, 139, 0.05) 1px, transparent 1px);
+    background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+    background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+  }
+  .dark .bg-circuit {
+    background-color: #111827;
+    background-image:
+      linear-gradient(rgba(34, 211, 238, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34, 211, 238, 0.1) 1px, transparent 1px),
+      linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px);
+    background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+    background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+  }
+  .bg-wavy-grid {
+      background-color: #f0f9ff;
+      background-size: 50px 50px;
+      background-image: linear-gradient(0deg, transparent 24%, rgba(0, 0, 0, .05) 25%, rgba(0, 0, 0, .05) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .05) 75%, rgba(0, 0, 0, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 0, 0, .05) 25%, rgba(0, 0, 0, .05) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .05) 75%, rgba(0, 0, 0, .05) 76%, transparent 77%, transparent);
+      animation: move-grid 4s linear infinite;
+  }
+  .dark .bg-wavy-grid {
+      background-color: #111827;
+      background-image: linear-gradient(0deg, transparent 24%, rgba(34, 211, 238, .1) 25%, rgba(34, 211, 238, .1) 26%, transparent 27%, transparent 74%, rgba(34, 211, 238, .1) 75%, rgba(34, 211, 238, .1) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(34, 211, 238, .1) 25%, rgba(34, 211, 238, .1) 26%, transparent 27%, transparent 74%, rgba(34, 211, 238, .1) 75%, rgba(34, 211, 238, .1) 76%, transparent 77%, transparent);
+      animation: move-grid 5s linear infinite;
+  }
+  .bg-polka-dots {
+      background-color: #f0f9ff;
+      background-image: radial-gradient(#d1d5db 1px, transparent 1px);
+      background-size: 20px 20px;
+  }
+  .dark .bg-polka-dots {
+      background-color: #1f2937;
+      background-image: radial-gradient(#4b5563 1px, transparent 1px);
+      background-size: 20px 20px;
+  }
+
+  .bg-digital-rain {
+      background-color: #f8fafc; /* slate-50 */
+      background-image: 
+          radial-gradient(rgba(96, 165, 250, 0.4) 0.5px, transparent 0.5px),
+          radial-gradient(rgba(59, 130, 246, 0.2) 1px, transparent 1px),
+          radial-gradient(rgba(59, 130, 246, 0.1) 1.5px, transparent 1.5px),
+          radial-gradient(rgba(30, 64, 175, 0.15) 1px, transparent 1px);
+      background-size: 
+          15px 15px,
+          25px 50px,
+          40px 80px,
+          30px 60px;
+      background-position: 0 0, 10px 20px, 5px 5px, 20px 30px;
+      animation: digital-rain-flow 2.5s linear infinite;
+  }
+  .dark .bg-digital-rain {
+      background-color: #020617; /* slate-950 */
+      background-image: 
+          radial-gradient(rgba(110, 231, 183, 0.5) 0.5px, transparent 0.5px),
+          radial-gradient(rgba(52, 211, 153, 0.3) 1px, transparent 1px),
+          radial-gradient(rgba(52, 211, 153, 0.1) 1.5px, transparent 1.5px),
+          radial-gradient(rgba(5, 150, 105, 0.2) 1px, transparent 1px);
+      background-size: 
+          15px 15px,
+          25px 50px,
+          40px 80px,
+          30px 60px;
+      background-position: 0 0, 10px 20px, 5px 5px, 20px 30px;
+      animation: digital-rain-flow 1.8s linear infinite;
+  }
+  .bg-tetris-fall {
+      background-color: #f1f5f9; /* slate-100 */
+      background-size: 80px 80px;
+      background-image:
+          linear-gradient(to right, #f87171 20px, transparent 20px), /* red-400 */
+          linear-gradient(to bottom, #f87171 20px, transparent 20px),
+          linear-gradient(to right, #60a5fa 20px, transparent 20px), /* blue-400 */
+          linear-gradient(to bottom, #60a5fa 20px, transparent 20px),
+          linear-gradient(to right, #4ade80 20px, transparent 20px), /* green-400 */
+          linear-gradient(to bottom, #4ade80 20px, transparent 20px),
+          linear-gradient(to right, #facc15 20px, transparent 20px), /* yellow-400 */
+          linear-gradient(to bottom, #facc15 20px, transparent 20px);
+      background-position:
+          20px 0, 20px 0,
+          40px 20px, 40px 20px,
+          0 40px, 0 40px,
+          60px 60px, 60px 60px;
+      animation: tetris-fall 8s linear infinite;
+  }
+  .dark .bg-tetris-fall {
+      background-color: #1f2937; /* gray-800 */
+      background-size: 80px 80px;
+       background-image:
+          linear-gradient(to right, #ef4444 20px, transparent 20px), /* red-500 */
+          linear-gradient(to bottom, #ef4444 20px, transparent 20px),
+          linear-gradient(to right, #3b82f6 20px, transparent 20px), /* blue-500 */
+          linear-gradient(to bottom, #3b82f6 20px, transparent 20px),
+          linear-gradient(to right, #22c55e 20px, transparent 20px), /* green-500 */
+          linear-gradient(to bottom, #22c55e 20px, transparent 20px),
+          linear-gradient(to right, #eab308 20px, transparent 20px), /* yellow-500 */
+          linear-gradient(to bottom, #eab308 20px, transparent 20px);
+      background-position:
+          20px 0, 20px 0,
+          40px 20px, 40px 20px,
+          0 40px, 0 40px,
+          60px 60px, 60px 60px;
+      animation: tetris-fall 8s linear infinite;
+  }
+
+</style>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

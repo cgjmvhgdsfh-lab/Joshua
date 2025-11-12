@@ -1,0 +1,9 @@
+{
+  "name": "Universum 4.0",
+  "description": "Universum 4.0 markiert einen Quantensprung in der KI-Evolution. Angetrieben von einem Quantum Synapse Core und ausgestattet mit prädiktiver Intelligenz, antizipiert es nicht nur Ihre Anfragen, sondern denkt voraus, um proaktiv Lösungen und kreative Pfade zu eröffnen. Seine Multi-Agenten-Architektur wurde erweitert, um komplexe Probleme in hyper-kontextuellen Arbeitsabläufen zu lösen, was zu einer beispiellosen Tiefe und Kohärenz der Ergebnisse führt. Universum 4.0 ist nicht nur ein Assistent – es ist ein symbiotischer kognitiver Partner, der Ihre Denkprozesse erweitert und beschleunigt.",
+  "requestFramePermissions": [
+    "microphone",
+    "camera"
+  ],
+  "prompt": ""
+}
